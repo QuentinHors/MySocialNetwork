@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Page d'inscription</title>
+{% endblock %}
+
+{% block content %}
+    <h1>Page d'inscription</h1>
+    <form action="{% url 'signup' %}" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="inscription">
+    </form>
+    {% if errors %}
+        {{ errors }}
+    {% endif %}
+{% endblock %}

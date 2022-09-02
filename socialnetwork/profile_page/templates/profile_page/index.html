@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Mon profile</title>
+{% endblock %}
+
+{% block content %}
+<h1>Contenu du profile</h1>
+<a href="{% url 'create_or_update_profile' %}">Modifié mon profile</a>
+{% endblock %}
