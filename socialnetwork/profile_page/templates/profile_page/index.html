@@ -6,5 +6,9 @@
 
 {% block content %}
 <h1>Contenu du profile</h1>
-<a href="{% url 'create_or_update_profile' %}">Modifié mon profile</a>
+{% if already_created %}
+<a href="{% url 'update_profile' %}">Modifié mon profile</a>
+{% else %}
+<a href="{% url 'create_profile' %}">Création de mon profile</a>
+{% endif %}
 {% endblock %}

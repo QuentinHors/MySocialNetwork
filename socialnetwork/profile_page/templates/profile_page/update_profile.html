@@ -6,9 +6,12 @@
 
 {% block content %}
     <h1>Création du profile</h1>
-    <form action="{% url 'create_profile' %}" method="post" enctype="multipart/form-data">
+    <form action="{% url 'update_profile' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
+        {% if profile.image_profile %}
+        <img src="{{ profile.image_profile.url }}" style="max-width: 250px;">
+        {% endif %}
         <input type="submit" value="Enregistrer">
     </form>
     {% if errors %}
