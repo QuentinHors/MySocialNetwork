@@ -2,41 +2,54 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .forms import ProfileForms
 from .models import Profile
+import os
 
 
 @login_required
 def profile_page(request):
-    return render(request, 'profile_page/index.html')
+    if Profile.objects.filter(user__id=request.user.id).exists():
+        context = {'already_created': True}
+    else:
+        context = {'already_created': False}
+    return render(request, 'profile_page/index.html', context=context)
 
 
 @login_required
-def create_or_update_profile(request):
-    create = Profile.objects.filter(user__id=request.user.id).exists()
-
+def create_profile(request):
     if request.method == 'POST':
-
-        if not create:
-            form = ProfileForms(request.POST, request.FILES)
-        else:
-            profile = Profile.objects.get(user__id=request.user.id)
-            form = ProfileForms(request.POST, request.FILES, instance=profile)
-
+        form = ProfileForms(request.POST, request.FILES)
         if form.is_valid():
-            if not create:
-                form = form.save(commit=False)
-                form.user = request.user
+            form = form.save(commit=False)
+            form.user = request.user
             form.save()
             return redirect('/profile')
-        else:
-            context = {'form': form, 'errors': 'Informations invalides'}
-            return render(request, 'profile_page/create_profile.html', context=context)
 
-    if not create:
-        form = ProfileForms()
-        context = {'form': form}
-    else:
-        profile = Profile.objects.get(user__id=request.user.id)
-        form = ProfileForms(instance=profile)
-        context = {'form': form, 'profile': profile}
+        context = {'form': form, 'errors': 'Informations invalides'}
+        return render(request, 'profile_page/create_profile.html', context=context)
 
+    form = ProfileForms()
+    context = {'form': form}
     return render(request, 'profile_page/create_profile.html', context=context)
+
+
+@login_required
+def update_profile(request):
+    profile = Profile.objects.get(user__id=request.user.id)
+    if request.method == 'POST':
+        form = ProfileForms(request.POST, request.FILES, instance=profile)
+        image_profile = profile.image_profile
+        if form.is_valid():
+            if 'image_profile' in form.changed_data and image_profile:
+                os.remove(image_profile.path)
+            form.save()
+            return redirect('/profile')
+
+        context = {'form': form,
+                   'profile': profile,
+                   'errors': 'Informations invalides'}
+
+        return render(request, 'profile_page/update_profile.html', context=context)
+
+    form = ProfileForms(instance=profile)
+    context = {'form': form, 'profile': profile}
+    return render(request, 'profile_page/update_profile.html', context=context)
