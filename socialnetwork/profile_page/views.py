@@ -16,6 +16,9 @@ def profile_page(request):
 
 @login_required
 def create_profile(request):
+    if Profile.objects.filter(user__id=request.user.id):
+        return redirect('update_profile')
+
     if request.method == 'POST':
         form = ProfileForms(request.POST, request.FILES)
         if form.is_valid():
