@@ -6,6 +6,14 @@
 
 {% block content %}
     <h1>Contenu de la page d'accueil</h1>
-    <a href="{% url 'logout' %}">Déconnexion</a>
-    <a href="{% url 'profile' %}">Mon profile</a>
+    <p><a href="{% url 'logout' %}">Déconnexion</a></p>
+    <p><a href="{% url 'profile' %}">Mon profile</a></p>
+    <p><a href="{% url 'create_post' %}?next={{ request.path|urlencode }}">Créer un post</a></p>
+    <div>
+        <h2>Posts</h2>
+        {% for post in user_posts %}
+            {% include 'profile_page/snippet_post.html' with post=post %}
+        {% endfor %}
+    </div>
+
 {% endblock %}

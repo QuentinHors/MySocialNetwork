@@ -5,10 +5,17 @@
 {% endblock %}
 
 {% block content %}
-<h1>Contenu du profile</h1>
-{% if already_created %}
-<a href="{% url 'update_profile' %}">Modifié mon profile</a>
-{% else %}
-<a href="{% url 'create_profile' %}">Création de mon profile</a>
-{% endif %}
+    <h1>Contenu du profile</h1>
+    {% if already_created %}
+        <a href="{% url 'update_profile' %}">Modifié mon profile</a>
+    {% else %}
+        <a href="{% url 'create_profile' %}">Création de mon profile</a>
+    {% endif %}
+    <p><a href="{% url 'create_post' %}?next={{ request.path|urlencode }}">Créer un post</a></p>
+    <div>
+        <h2>Mes Posts</h2>
+        {% for post in user_posts %}
+            {% include 'profile_page/snippet_post.html' with post=post %}
+        {% endfor %}
+    </div>
 {% endblock %}
