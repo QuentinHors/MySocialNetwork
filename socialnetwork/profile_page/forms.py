@@ -1,5 +1,5 @@
 from django import forms
-from .models import Profile
+from .models import Profile, Post
 
 
 class ProfileForms(forms.ModelForm):
@@ -14,3 +14,13 @@ class ProfileForms(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['first_name', 'last_name', 'description', 'image_profile']
+
+
+class PostForm(forms.ModelForm):
+    text = forms.CharField(max_length=255,
+                           widget=forms.TextInput(attrs={'placeholder': 'Texte...'}))
+    image = forms.ImageField(required=False, label="")
+
+    class Meta:
+        model = Post
+        fields = ['text', 'image']
