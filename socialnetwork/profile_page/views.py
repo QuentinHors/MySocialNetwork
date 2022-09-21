@@ -63,6 +63,7 @@ def update_profile(request):
 
 @login_required
 def create_post(request):
+
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
@@ -70,6 +71,8 @@ def create_post(request):
             form.user = request.user
             form.save()
             redirection_page = request.POST.get('next')
+            if not redirection_page:
+                redirection_page = '/home/'
             return redirect(redirection_page)
 
         context = {'form': form, 'errors': 'Informations invalides'}
@@ -91,6 +94,8 @@ def update_post(request, post_id):
                 os.remove(image_post.path)
             form.save()
             redirection_page = request.POST.get('next')
+            if not redirection_page:
+                redirection_page = '/home/'
             return redirect(redirection_page)
 
         context = {'form': form,
@@ -111,4 +116,6 @@ def delete_post(request, post_id):
         os.remove(path=image_post.path)
     post.delete()
     redirection_page = request.GET.get('next')
+    if not redirection_page:
+        redirection_page = '/home/'
     return redirect(redirection_page)
