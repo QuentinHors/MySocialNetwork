@@ -1,17 +1,15 @@
 import pytest
 from django import urls
-from django.contrib.auth import get_user_model
 from profile_page.models import Profile
-
-User = get_user_model()
 
 
 @pytest.mark.django_db(transaction=True)
-def test_create_and_update_profile(client):
-    user = User.objects.create_user(email='email@email.com', username='username', password='pass')
-    client.login(email='email@email.com', password='pass')
+def test_create_and_update_profile(client, login_user):
+    user = login_user
+
     url = urls.reverse('profile')
     resp = client.get(url)
+
     assert resp.status_code == 200
     assert """<a href="/profile/create">""".encode('utf-8') in resp.content
 
