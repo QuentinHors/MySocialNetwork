@@ -18,7 +18,9 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from socialnetwork import settings
 
+
 urlpatterns = [
+    path('__debug__/', include('debug_toolbar.urls')),
     path('admin/', admin.site.urls),
     path('', include('account.urls')),
     path('profile/', include('profile_page.urls')),
