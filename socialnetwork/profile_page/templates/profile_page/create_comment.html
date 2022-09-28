@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Création d'un commentaire</title>
+{% endblock %}
+
+{% block content %}
+    <h1>Création d'un commentaire</h1>
+    <form action="{% url 'create_comment' post_id %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="hidden" name="next" value="{{ request.GET.next }}">
+        <input type="submit" value="Envoyer">
+    </form>
+    {% if errors %}
+    <p> {{ errors }}</p>
+    {% endif %}
+{% endblock %}

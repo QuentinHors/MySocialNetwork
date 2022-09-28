@@ -1,0 +1,10 @@
+<div>
+    <h4>Commentaire de {{ comment.user.username }} (id={{ comment.id }})</h4>
+    <p>Créer le {{ comment.date_created }}</p>
+    <p>{{ comment.text }}</p>
+    {% if comment.image %}
+        <img src="{{ comment.image.url }}" style="max-width: 200px;">
+    {% endif %}
+    <a href="{% url 'update_comment' comment.id %}">Modifier</a>
+    <a href="{% url 'delete_comment' comment.id %}">Supprimer</a>
+</div>

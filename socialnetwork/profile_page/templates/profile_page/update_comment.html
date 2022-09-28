@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Modification d'un commentaire</title>
+{% endblock %}
+
+{% block content %}
+    <h1>Modification d'un commentaire</h1>
+    <form action="{% url 'update_comment' form.instance.id %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        {% if form.instance.image %}
+            <img src="{{ form.instance.image.url }}" style="max-width: 250px;">
+        {% endif %}
+        <input type="hidden" name="next" value="{{ request.GET.next }}">
+        <input type="submit" value="Envoyer">
+    </form>
+    {% if errors %}
+    <p> {{ errors }}</p>
+    {% endif %}
+{% endblock %}
