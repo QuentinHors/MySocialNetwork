@@ -1,5 +1,5 @@
 <div>
-    <h3>Post de {{ post.user.username }}</h3>
+    <h3>Post de {{ post.user.username }} (id={{ post.id }})</h3>
     <p>Créer le {{ post.date_created }}</p>
     <p>{{ post.text }}</p>
     {% if post.image %}
@@ -7,4 +7,8 @@
     {% endif %}
     <a href="{% url 'update_post' post.id %}?next={{ request.path|urlencode }}">Modifier</a>
     <a href="{% url 'delete_post' post.id %}?next={{ request.path|urlencode }}">Supprimer</a>
+    <a href="{% url 'create_comment' post.id %}?next={{request.path|urlencode}}">Commenter</a>
+    {% for comment in comments %}
+        {% include 'profile_page/snippet_comment.html' with comment=comment %}
+    {% endfor %}
 </div>
