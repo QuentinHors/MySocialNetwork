@@ -11,8 +11,8 @@
     <p><a href="{% url 'create_post' %}?next={{ request.path|urlencode }}">Créer un post</a></p>
     <div>
         <h2>Posts</h2>
-        {% for post in user_posts %}
-            {% include 'profile_page/snippet_post.html' with post=post %}
+        {% for post, comments in user_posts %}
+            {% include 'profile_page/snippet_post.html' with post=post comments=comments %}
         {% endfor %}
     </div>
 
